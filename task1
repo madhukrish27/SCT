@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+def fspl(distance, frequency):
+  speed_of_light = 3e8
+  fspl_db = 20 * np.log10(distance) + 20 * np.log10(frequency) - 147.55
+  return fspl_db
+
+distance = 1000
+frequency = 2.4e9
+print(f"FSPL at {distance} meters and {frequency/1e9} GHz: {fspl(distance, frequency):.2f}dB")
+distances = np.linspace(1, 10000, 100)
+frequencies = [900e6, 2.4e9, 5e9]
+for freq in frequencies:
+  losses = [fspl(d, freq) for d in distances]
+  plt.plot(distances, losses, label=f"{freq/1e9} GHz")
+plt.title("Free Space Path Loss (FSPL) vs Distance")
+plt.xlabel("Distance (meters)")
+plt.ylabel("Path Loss (dB)")
+plt.grid(True)
+plt.legend()
+plt.show()
+freq_range = np.linspace(100e6, 10e9, 100)
+distances_to_plot = [100, 1000, 5000]
+plt.figure(figsize=(10, 6))
+for dist in distances_to_plot:
+  losses = [fspl(dist, f) for f in freq_range]
+  plt.plot(freq_range/1e9, losses, label=f"{dist} meters")
+plt.title("Free Space Path Loss (FSPL) vs Frequency")
+plt.xlabel("Frequency (GHz)")
+plt.ylabel("Path Loss (dB)")
+plt.grid(True)
+plt.legend()
+plt.show()
